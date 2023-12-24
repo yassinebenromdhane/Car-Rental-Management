@@ -4,17 +4,36 @@
  */
 package carrentalmanagement.forms.panels;
 
+import carrentalmanagement.controllers.ReservationDAO;
+import carrentalmanagement.controllers.ReservationDAOImp;
+import carrentalmanagement.forms.dialog.ReservationDialog;
+import carrentalmanagement.models.Customer;
+import carrentalmanagement.models.Reservation;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+
 /**
  *
  * @author mre
  */
 public class ReservationPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ReservationPanel
-     */
+    JTabbedPane tabs;
+    List<Reservation> customersList = new ArrayList();
+    JFrame frame;
+
     public ReservationPanel() {
         initComponents();
+    }
+    
+     public ReservationPanel(JTabbedPane parent, JFrame frame) {
+        this.tabs = parent;
+        this.frame = frame;
+        initComponents();
+        //initTable();
     }
 
     /**
@@ -26,19 +45,122 @@ public class ReservationPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        close_btn = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_reservations = new javax.swing.JTable();
+        bt_add = new javax.swing.JButton();
+        bt_delete = new javax.swing.JButton();
+
+        close_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/close_icon.png"))); // NOI18N
+        close_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                close_btnMouseClicked(evt);
+            }
+        });
+
+        tbl_reservations.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tbl_reservations.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_reservationsMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_reservations);
+
+        bt_add.setText("Add Reservation");
+        bt_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_addActionPerformed(evt);
+            }
+        });
+
+        bt_delete.setText("Delete ");
+        bt_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_deleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(close_btn)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(bt_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bt_add, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(close_btn)
+                        .addGap(82, 82, 82)
+                        .addComponent(bt_add)
+                        .addGap(18, 18, 18)
+                        .addComponent(bt_delete))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void close_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_btnMouseClicked
+        int index = tabs.indexOfComponent(this);
+        tabs.remove(index);
+    }//GEN-LAST:event_close_btnMouseClicked
+
+    private void tbl_reservationsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_reservationsMouseClicked
+        int row = tbl_reservations.rowAtPoint(evt.getPoint());
+
+        if (evt.getClickCount() == 2) {
+            Object id = tbl_reservations.getModel().getValueAt(row, 0);
+            Object ob = tbl_reservations.getModel().getValueAt(row, 1);
+            System.out.println(id);
+            System.out.println(ob);
+            ReservationDialog st = new ReservationDialog(frame, true);
+            st.setVisible(true);
+            // open editor
+        }
+    }//GEN-LAST:event_tbl_reservationsMouseClicked
+
+    private void bt_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addActionPerformed
+        ReservationDialog dialog = new ReservationDialog(this.frame, true);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_bt_addActionPerformed
+
+    private void bt_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_deleteActionPerformed
+        ReservationDAO dao = new ReservationDAOImp();
+        Object rowIndex = tbl_reservations.getSelectedRow();
+        int confirm = JOptionPane.showConfirmDialog(this, "Doyou want to delete this  item ?");
+        if (confirm == 0) {
+            //int del = dao.deleteCustomerById(customersList.get((Integer) rowIndex).getId());
+            //initTable();
+        }
+    }//GEN-LAST:event_bt_deleteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bt_add;
+    private javax.swing.JButton bt_delete;
+    private javax.swing.JLabel close_btn;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbl_reservations;
     // End of variables declaration//GEN-END:variables
 }

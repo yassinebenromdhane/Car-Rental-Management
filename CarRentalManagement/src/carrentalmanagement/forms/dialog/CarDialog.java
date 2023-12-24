@@ -25,6 +25,7 @@ public class CarDialog extends javax.swing.JDialog {
     CarDAO dao = new CarsDAOImp();
     boolean state;
     JTable table;
+    CarTableModel model;
     List<Car> carsList;
     Integer rowIndex;
 
@@ -36,11 +37,12 @@ public class CarDialog extends javax.swing.JDialog {
         initComponents();
     }
 
-    public CarDialog(java.awt.Frame parent, boolean modal, boolean edit, int id, JTable table, List<Car> carsList , Integer rowIndex) {
+    public CarDialog(java.awt.Frame parent, boolean modal, boolean edit, int id, JTable table, List<Car> carsList , Integer rowIndex , CarTableModel model) {
         super(parent, modal);
         this.edit = edit;
         this.id = id;
         this.table = table;
+        this.model = model;
         this.carsList = carsList;
         this.rowIndex = rowIndex;
         initComponents();
@@ -222,8 +224,12 @@ public class CarDialog extends javax.swing.JDialog {
             if (add > 0) {
                 JOptionPane.showMessageDialog(this, "Car Inserted");
                 this.dispose();
-                this.carsList.add(car);
+                dao = new CarsDAOImp();
+                this.carsList = dao.getCarsList();
                 this.table.setModel(new CarTableModel(carsList));
+                this.table.repaint();
+                //this.carsList.add(car);
+                //this.table.setModel(new CarTableModel(carsList));
             }
         } else {
             car.setId(id);

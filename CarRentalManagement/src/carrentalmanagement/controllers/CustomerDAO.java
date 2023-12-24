@@ -8,6 +8,7 @@ import java.util.List;
 public interface CustomerDAO {
     
     List<Customer> getCustomersList();
+    List<Customer> getCustomersListWithNoReservation();
     Customer getCustomerById(Integer id);
     int addCustomer(Customer customer);
     int updateCustomerById(Integer id , Customer customer);

@@ -24,6 +24,7 @@ public class CarsPanel extends javax.swing.JPanel {
     JTabbedPane tabs;
     List<Car> carsList = new ArrayList();
     JFrame frame;
+    CarTableModel model;
 
     public CarsPanel() {
         initComponents();
@@ -39,7 +40,7 @@ public class CarsPanel extends javax.swing.JPanel {
     public void initTable() {
         CarDAO dao = new CarsDAOImp();
         carsList = dao.getCarsList();
-        CarTableModel model = new CarTableModel(carsList);
+        model = new CarTableModel(carsList);
         tbl_cars.setModel(model);
     }
 
@@ -163,14 +164,14 @@ public class CarsPanel extends javax.swing.JPanel {
             Object ob = tbl_cars.getModel().getValueAt(row, 1);
             System.out.println(id);
             System.out.println(ob);
-            CarDialog st = new CarDialog(frame, true, true, (Integer) id, tbl_cars, carsList ,0);
+            CarDialog st = new CarDialog(frame, true, true, (Integer) id, tbl_cars, carsList ,0 , model);
             st.setVisible(true);
             // open editor
         }
     }//GEN-LAST:event_tbl_carsMouseClicked
 
     private void bt_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addActionPerformed
-        CarDialog dialog = new CarDialog(this.frame, true, false, 0, tbl_cars, carsList , 0);
+        CarDialog dialog = new CarDialog(this.frame, true, false, 0, tbl_cars, carsList , 0 , model);
         dialog.setVisible(true);
     }//GEN-LAST:event_bt_addActionPerformed
 

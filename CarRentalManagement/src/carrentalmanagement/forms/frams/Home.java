@@ -6,6 +6,7 @@ package carrentalmanagement.forms.frams;
 
 import carrentalmanagement.forms.panels.CarsPanel;
 import carrentalmanagement.forms.panels.CustomerPanel;
+import carrentalmanagement.forms.panels.ReservationPanel;
 import java.awt.Color;
 
 /**
@@ -184,22 +185,22 @@ public class Home extends javax.swing.JFrame {
 
     private void bt_cars_menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cars_menuActionPerformed
         if(tabbed_pane.indexOfTab("Cars") == -1){
-            CarsPanel student = new CarsPanel(tabbed_pane , this);
-            tabbed_pane.add("Cars", student);
+            CarsPanel cars = new CarsPanel(tabbed_pane , this);
+            tabbed_pane.add("Cars", cars);
         }
     }//GEN-LAST:event_bt_cars_menuActionPerformed
 
     private void bt_customers_menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_customers_menuActionPerformed
         if(tabbed_pane.indexOfTab("Customers") == -1){
-            CustomerPanel student = new CustomerPanel(tabbed_pane , this);
-            tabbed_pane.add("Customers", student);
+            CustomerPanel customers = new CustomerPanel(tabbed_pane , this);
+            tabbed_pane.add("Customers", customers);
         }
     }//GEN-LAST:event_bt_customers_menuActionPerformed
 
     private void bt_reservation_menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_reservation_menuActionPerformed
          if(tabbed_pane.indexOfTab("Reservations") == -1){
-            CustomerPanel student = new CustomerPanel(tabbed_pane , this);
-            tabbed_pane.add("Reservations", student);
+            ReservationPanel reservation = new ReservationPanel(tabbed_pane , this);
+            tabbed_pane.add("Reservations", reservation);
         }
     }//GEN-LAST:event_bt_reservation_menuActionPerformed
 

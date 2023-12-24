@@ -4,6 +4,13 @@
  */
 package carrentalmanagement.forms.dialog;
 
+import carrentalmanagement.models.Car;
+import carrentalmanagement.models.Reservation;
+import carrentalmanagement.table.models.CarTableModel;
+import carrentalmanagement.table.models.ReservationTableModel;
+import java.util.List;
+import javax.swing.JTable;
+
 /**
  *
  * @author mre
@@ -17,6 +24,18 @@ public class ReservationDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
+     public ReservationDialog(java.awt.Frame parent, boolean modal, boolean edit, int id, JTable table, List<Reservation> resList , Integer rowIndex , ReservationTableModel model) {
+        super(parent, modal);
+        this.edit = edit;
+        this.id = id;
+        this.table = table;
+        this.model = model;
+        this.carsList = carsList;
+        this.rowIndex = rowIndex;
+        initComponents();
+        initForm();
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,21 +46,160 @@ public class ReservationDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        tf_id = new javax.swing.JTextField();
+        bt_add = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        cb_exit = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        end_date = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        lb_id = new javax.swing.JLabel();
+        begin_date = new javax.swing.JTextField();
+        cb_cars = new javax.swing.JComboBox<>();
+        cb_customers = new javax.swing.JComboBox<>();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        tf_id.setEditable(false);
+        tf_id.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_idActionPerformed(evt);
+            }
+        });
+
+        bt_add.setText("Add");
+        bt_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_addActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Car");
+
+        cb_exit.setText("Cancel");
+        cb_exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_exitActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Customer");
+
+        jLabel3.setText("Begin date");
+
+        jLabel4.setText("End date");
+
+        lb_id.setText("Id");
+
+        cb_cars.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cb_customers.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(begin_date, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addComponent(lb_id))
+                            .addGap(67, 67, 67)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cb_cars, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(bt_add))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(end_date)
+                            .addComponent(cb_customers, 0, 129, Short.MAX_VALUE)))
+                    .addComponent(cb_exit))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lb_id)
+                    .addComponent(tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(cb_customers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1)
+                    .addComponent(cb_cars, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(end_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(begin_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(98, 98, 98)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt_add)
+                    .addComponent(cb_exit))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tf_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_idActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_idActionPerformed
+
+    private void bt_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addActionPerformed
+
+            reservation = new Reservation(cb_cras.getText(), cb_customers.getText(), Double.valueOf(end_date.getText()), this.state);
+            int add = dao.addCar(car);
+            if (add > 0) {
+                JOptionPane.showMessageDialog(this, "Car Inserted");
+                this.dispose();
+                dao = new CarsDAOImp();
+                this.carsList = dao.getCarsList();
+                this.table.setModel(new CarTableModel(carsList));
+                this.table.repaint();
+                //this.carsList.add(car);
+                //this.table.setModel(new CarTableModel(carsList));
+            }
+        } else {
+            car.setId(id);
+            car.setModel(cb_cras.getText());
+            car.setSeriel_number(cb_customers.getText());
+            car.setPrice_per_hour(Double.valueOf(end_date.getText()));
+            car.setState(this.state);
+            int ed = dao.updateCarById(id, car);
+            if (ed > 0) {
+                JOptionPane.showMessageDialog(this, "Car Updated");
+                this.dispose();
+                this.carsList.get(id -1).setId(id);
+                this.carsList.get(id -1).setModel(car.getModel());
+                this.carsList.get(id -1).setPrice_per_hour(car.getPrice_per_hour());
+                this.carsList.get(id -1).setSeriel_number(car.getSeriel_number());
+                this.carsList.get(id -1).setState(car.getState());
+            }
+        }
+    }//GEN-LAST:event_bt_addActionPerformed
+
+    private void cb_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_exitActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_cb_exitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -86,5 +244,17 @@ public class ReservationDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField begin_date;
+    private javax.swing.JButton bt_add;
+    private javax.swing.JComboBox<String> cb_cars;
+    private javax.swing.JComboBox<String> cb_customers;
+    private javax.swing.JButton cb_exit;
+    private javax.swing.JTextField end_date;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel lb_id;
+    private javax.swing.JTextField tf_id;
     // End of variables declaration//GEN-END:variables
 }

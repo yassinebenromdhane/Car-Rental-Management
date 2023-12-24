@@ -10,6 +10,7 @@ import carrentalmanagement.controllers.CustomerDAO;
 import carrentalmanagement.controllers.CustomerDAOImp;
 import carrentalmanagement.models.Car;
 import carrentalmanagement.models.Customer;
+import carrentalmanagement.table.models.CarTableModel;
 import carrentalmanagement.table.models.CustomerTableModel;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -35,19 +36,18 @@ public class CustomerDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-    public CustomerDialog(java.awt.Frame parent, boolean modal, boolean edit, int id, JTable table, List<Customer> customersList , Integer rowIndex) {
+    public CustomerDialog(java.awt.Frame parent, boolean modal, boolean edit, int id, JTable table, List<Customer> customersList ) {
         super(parent, modal);
         this.edit = edit;
         this.id = id;
         this.table = table;
         this.customersList = customersList;
-        this.rowIndex = rowIndex;
         initComponents();
         initForm();
     }
 
     public void initForm() {
-        if (!edit) {
+        if (edit == false) {
             lb_id.setVisible(false);
             tf_id.setVisible(false);
         } else {
@@ -170,6 +170,7 @@ public class CustomerDialog extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void tf_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_idActionPerformed
@@ -183,10 +184,14 @@ public class CustomerDialog extends javax.swing.JDialog {
             customer = new Customer(0,tf_name.getText(), tf_last_name.getText(), Integer.valueOf(tf_age.getText()));
             int add = dao.addCustomer(customer);
             if (add > 0) {
-                JOptionPane.showMessageDialog(this, "Car Inserted");
+                JOptionPane.showMessageDialog(this, "Customer Inserted");
                 this.dispose();
-                this.customersList.add(customer);
+                dao = new CustomerDAOImp();
+                this.customersList = dao.getCustomersList();
                 this.table.setModel(new CustomerTableModel(customersList));
+                this.table.repaint();
+                //this.customersList.add(customer);
+                //this.table.setModel(new CustomerTableModel(customersList));
             }
         } else {
             customer.setId(id);
@@ -196,12 +201,12 @@ public class CustomerDialog extends javax.swing.JDialog {
   
             int ed = dao.updateCustomerById(id, customer);
             if (ed > 0) {
-                JOptionPane.showMessageDialog(this, "Car Updated");
+                JOptionPane.showMessageDialog(this, "Customer Updated");
                 this.dispose();
-                this.customersList.get(id -1).setId(id);
-                this.customersList.get(id -1).setName(customer.getName());
-                this.customersList.get(id -1).setLastName(customer.getLastName());
-                this.customersList.get(id -1).setAge(customer.getAge());
+                dao = new CustomerDAOImp();
+                this.customersList = dao.getCustomersList();
+                this.table.setModel(new CustomerTableModel(customersList));
+                this.table.repaint();
             }
         }
     }//GEN-LAST:event_bt_addActionPerformed

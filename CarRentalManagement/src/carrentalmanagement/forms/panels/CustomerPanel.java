@@ -17,6 +17,7 @@ import carrentalmanagement.table.models.CustomerTableModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 
@@ -25,23 +26,24 @@ import javax.swing.JTable;
  * @author mre
  */
 public class CustomerPanel extends javax.swing.JPanel {
+
     JTabbedPane tabs;
     List<Customer> customersList = new ArrayList();
     JFrame frame;
 
-  
     public CustomerPanel() {
         initComponents();
     }
-    public CustomerPanel(JTabbedPane parent , JFrame frame) {
+
+    public CustomerPanel(JTabbedPane parent, JFrame frame) {
         this.tabs = parent;
         this.frame = frame;
         initComponents();
         initTable();
     }
-    
-     public void initTable() {
-        CustomerDAO dao =  new CustomerDAOImp();
+
+    public void initTable() {
+        CustomerDAO dao = new CustomerDAOImp();
         customersList = dao.getCustomersList();
         CustomerTableModel model = new CustomerTableModel(customersList);
         tbl_customers.setModel(model);
@@ -93,6 +95,11 @@ public class CustomerPanel extends javax.swing.JPanel {
         });
 
         bt_delete.setText("Delete Customer");
+        bt_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_deleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -158,20 +165,30 @@ public class CustomerPanel extends javax.swing.JPanel {
         int row = tbl_customers.rowAtPoint(evt.getPoint());
 
         if (evt.getClickCount() == 2) {
-            Object  id = tbl_customers.getModel().getValueAt(row, 0);
+            Object id = tbl_customers.getModel().getValueAt(row, 0);
             Object ob = tbl_customers.getModel().getValueAt(row, 1);
             System.out.println(id);
             System.out.println(ob);
-            CustomerDialog st = new CustomerDialog(frame, true, true, (Integer) id, tbl_customers, customersList ,0);
+            CustomerDialog st = new CustomerDialog(frame, true, true, (Integer) id, tbl_customers, customersList);
             st.setVisible(true);
             // open editor
         }
     }//GEN-LAST:event_tbl_customersMouseClicked
 
     private void bt_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addActionPerformed
-        CarDialog dialog = new CarDialog(this.frame, true );
+        CustomerDialog dialog = new CustomerDialog(this.frame, true, false, 0, tbl_customers, customersList);
         dialog.setVisible(true);
     }//GEN-LAST:event_bt_addActionPerformed
+
+    private void bt_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_deleteActionPerformed
+        CustomerDAO dao = new CustomerDAOImp();
+        Object rowIndex = tbl_customers.getSelectedRow();
+        int confirm = JOptionPane.showConfirmDialog(this, "Doyou want to delete this  item ?");
+        if (confirm == 0) {
+            int del = dao.deleteCustomerById(customersList.get((Integer) rowIndex).getId());
+            initTable();
+        }
+    }//GEN-LAST:event_bt_deleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

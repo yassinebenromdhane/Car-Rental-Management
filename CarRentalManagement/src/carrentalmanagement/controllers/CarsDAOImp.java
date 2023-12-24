@@ -113,4 +113,22 @@ public class CarsDAOImp implements CarDAO {
         }
         return res;
     }
+
+    @Override
+    public List<Car> getCarsListByState() {
+        try {
+            listCars = new ArrayList<>();
+            PreparedStatement ps = con.prepareStatement("select * from cars where state = true");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Car car = new Car(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getBoolean(5));
+                listCars.add(car);
+            }
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listCars;
+    }
 }
