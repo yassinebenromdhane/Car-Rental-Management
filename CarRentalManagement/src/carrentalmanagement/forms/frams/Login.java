@@ -66,6 +66,11 @@ public class Login extends javax.swing.JFrame {
         });
 
         bt_register.setText("Register");
+        bt_register.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_registerActionPerformed(evt);
+            }
+        });
 
         bt_clear.setText("Clear");
         bt_clear.addActionListener(new java.awt.event.ActionListener() {
@@ -153,6 +158,12 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Invalid Identifier");
         }
     }//GEN-LAST:event_bt_loginActionPerformed
+
+    private void bt_registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_registerActionPerformed
+       Register register = new Register();
+       this.dispose();
+       register.setVisible(true);
+    }//GEN-LAST:event_bt_registerActionPerformed
 
     
     public static void main(String args[]) {
