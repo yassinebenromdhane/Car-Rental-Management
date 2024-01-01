@@ -2,7 +2,10 @@
 package carrentalmanagement.models;
 
 
-public class Customer extends Personne{
+import java.io.Serializable;
+
+public class Customer extends Personne implements Serializable {
+    private static final long serialVersionUID = 1L;
     
     int age;
 
