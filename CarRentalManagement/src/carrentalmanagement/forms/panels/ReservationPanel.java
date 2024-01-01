@@ -4,11 +4,15 @@
  */
 package carrentalmanagement.forms.panels;
 
+import carrentalmanagement.controllers.CarDAO;
+import carrentalmanagement.controllers.CarsDAOImp;
 import carrentalmanagement.controllers.ReservationDAO;
 import carrentalmanagement.controllers.ReservationDAOImp;
 import carrentalmanagement.forms.dialog.ReservationDialog;
 import carrentalmanagement.models.Customer;
 import carrentalmanagement.models.Reservation;
+import carrentalmanagement.table.models.CarTableModel;
+import carrentalmanagement.table.models.ReservationTableModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
@@ -22,8 +26,9 @@ import javax.swing.JTabbedPane;
 public class ReservationPanel extends javax.swing.JPanel {
 
     JTabbedPane tabs;
-    List<Reservation> customersList = new ArrayList();
+    List<Reservation> resList = new ArrayList();
     JFrame frame;
+    ReservationTableModel model;
 
     public ReservationPanel() {
         initComponents();
@@ -33,7 +38,14 @@ public class ReservationPanel extends javax.swing.JPanel {
         this.tabs = parent;
         this.frame = frame;
         initComponents();
-        //initTable();
+        initTable();
+    }
+     
+     public void initTable() {
+        ReservationDAO dao = new ReservationDAOImp();
+        resList = dao.getReservationsList();
+        model = new ReservationTableModel(resList);
+        tbl_reservations.setModel(model);
     }
 
     /**

@@ -31,6 +31,15 @@ public class Reservation {
         this.hours = hours;
         this.total = total;
     }
+    
+    public Reservation(int id ,int customer_id, int car_id, String reservation_begin_date, String reservation_end_date) {
+        this.id = id;
+        this.customer_id = customer_id;
+        this.car_id = car_id;
+        this.reservation_begin_date = reservation_begin_date;
+        this.reservation_end_date = reservation_end_date;
+
+    }
 
     public int getId() {
         return id;
