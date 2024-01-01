@@ -24,6 +24,7 @@ import javax.swing.JTable;
  * @author mre
  */
 public class ReservationDialog extends javax.swing.JDialog {
+
     boolean edit;
     Reservation res;
     int id;
@@ -35,7 +36,7 @@ public class ReservationDialog extends javax.swing.JDialog {
     Integer rowIndex;
     List<Car> carList;
     List<Customer> customersList;
-    
+
 
     /**
      * Creates new form ReservationDialog
@@ -45,8 +46,9 @@ public class ReservationDialog extends javax.swing.JDialog {
         initComponents();
         this.lb_id.setEnabled(false);
         this.tf_id.setEnabled(false);
+        initForm();
     }
-    
+
     public ReservationDialog(java.awt.Frame parent, boolean modal, boolean edit, int id, JTable table, List<Reservation> resList , Integer rowIndex , CarTableModel model) {
         super(parent, modal);
         this.edit = edit;
@@ -57,8 +59,10 @@ public class ReservationDialog extends javax.swing.JDialog {
         initComponents();
         initForm();
     }
-    
+
     public void initForm() {
+        initCbCars();
+        initCbCustomers();
         if (!edit) {
             lb_id.setVisible(false);
             tf_id.setVisible(false);
@@ -75,7 +79,7 @@ public class ReservationDialog extends javax.swing.JDialog {
         for(Car car : carList){
             cb_cars.addItem(String.valueOf(car.getId()) + '-' + car.getModel());
         }
-        
+
     }
     public void initCbCustomers(){
         CustomerDAO dao_customers = new CustomerDAOImp();
@@ -84,7 +88,7 @@ public class ReservationDialog extends javax.swing.JDialog {
         for(Customer cust : customersList){
             cb_customers.addItem(String.valueOf(cust.getId()) + '-' + cust.getName());
         }
-        
+
     }
 
     /**
@@ -113,26 +117,19 @@ public class ReservationDialog extends javax.swing.JDialog {
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(600, 700));
 
         lb_id.setText("id");
 
         tf_id.setText("jTextField1");
 
-        tf_start.setText("jTextField1");
-
         jLabel2.setText("Start Date");
-
-        tf_end.setText("jTextField1");
 
         jLabel4.setText("End Date");
 
         lb_car.setText("Car");
 
         lb_customer.setText("Cusotmer");
-
-        cb_cars.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cb_customers.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         bt_cancel.setText("Cancel");
         bt_cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -153,33 +150,37 @@ public class ReservationDialog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lb_car)
-                                .addGap(33, 33, 33)
-                                .addComponent(cb_cars, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(tf_start, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(lb_id)
                                 .addGap(18, 18, 18)
-                                .addComponent(tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(lb_car)
+                                        .addGap(33, 33, 33))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(8, 8, 8)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tf_start)
+                                    .addComponent(cb_cars, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(44, 44, 44)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(tf_end, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(lb_customer)
-                                .addGap(18, 18, 18)
-                                .addComponent(cb_customers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(18, 18, 18))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(8, 8, 8)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tf_end)
+                            .addComponent(cb_customers, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bt_add)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bt_cancel)
                         .addGap(108, 108, 108)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,6 +209,7 @@ public class ReservationDialog extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void bt_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cancelActionPerformed
