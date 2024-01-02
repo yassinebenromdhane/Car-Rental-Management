@@ -7,10 +7,9 @@ import carrentalmanagement.controllers.CustomerDAOImp;
 import carrentalmanagement.forms.dialog.CustomerDialog;
 import carrentalmanagement.models.Car;
 import carrentalmanagement.models.Customer;
+import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,27 +19,37 @@ public class ClientHandler extends Thread {
     private Socket socket;
     private List<Customer> customersList;
     private boolean isAddedCustomer;
+    private BufferedReader in;
+    private PrintWriter out;
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
+        try {
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void run() {
         try {
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 
             while(true) {
 
-                String action = in.readUTF();
+                String action = in.readLine();
 
                 if("CREATE".equals(action)) {
-                    Customer c = (Customer) in.readObject();
+                    System.out.println("CREATE ....");
+                    String s = in.readLine();
+                    Gson gson = new Gson();
+                    Customer c = gson.fromJson(s , Customer.class);
+                    System.out.println(c);
                     CustomerDAO dao = new CustomerDAOImp();
                     dao.addCustomer(c);
-                    out.writeUTF("CREATED");
-                    isAddedCustomer = true;
+                    out.println("CREATED");
+                    System.out.println("CREATED ....");
                 }
 
                 // autres actions CRUD
@@ -54,12 +63,9 @@ public class ClientHandler extends Thread {
 
             }
 
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean isAddedCustomer(){
-        return this.isAddedCustomer;
-    }
 }

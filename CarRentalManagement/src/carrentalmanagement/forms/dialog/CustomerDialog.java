@@ -12,6 +12,13 @@ import carrentalmanagement.models.Car;
 import carrentalmanagement.models.Customer;
 import carrentalmanagement.table.models.CarTableModel;
 import carrentalmanagement.table.models.CustomerTableModel;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,6 +35,9 @@ public class CustomerDialog extends javax.swing.JDialog {
     JTable table;
     List<Customer> customersList;
     Integer rowIndex;
+    Socket socket;
+    PrintWriter out;
+    BufferedReader in;
 
     /**
      * Creates new form CustomerDialog
@@ -47,6 +57,13 @@ public class CustomerDialog extends javax.swing.JDialog {
     }
 
     public void initForm() {
+        try{
+            socket = new Socket("localhost",9000);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        }catch (IOException io){
+            io.printStackTrace();
+        }
         if (edit == false) {
             lb_id.setVisible(false);
             tf_id.setVisible(false);
@@ -180,19 +197,27 @@ public class CustomerDialog extends javax.swing.JDialog {
     private void bt_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addActionPerformed
 
         if (!edit) {
-            dao = new CustomerDAOImp();
-            customer = new Customer(0,tf_name.getText(), tf_last_name.getText(), Integer.valueOf(tf_age.getText()));
-            int add = dao.addCustomer(customer);
-            if (add > 0) {
-                JOptionPane.showMessageDialog(this, "Customer Inserted");
-                this.dispose();
-                dao = new CustomerDAOImp();
-                this.customersList = dao.getCustomersList();
-                this.table.setModel(new CustomerTableModel(customersList));
-                this.table.repaint();
-                //this.customersList.add(customer);
-                //this.table.setModel(new CustomerTableModel(customersList));
-            }
+           try{
+//               dao = new CustomerDAOImp();
+               customer = new Customer(0,tf_name.getText(), tf_last_name.getText(), Integer.valueOf(tf_age.getText()));
+               out.println("CREATE");
+//               int add = dao.addCustomer(customer);
+               String jsonCustomer = new Gson().toJson(customer);
+               out.println(jsonCustomer);
+               String response = in.readLine();
+               if (response.equals("CREATED")) {
+                   JOptionPane.showMessageDialog(this, "Customer Inserted");
+                   this.dispose();
+                   dao = new CustomerDAOImp();
+                   this.customersList = dao.getCustomersList();
+                   this.table.setModel(new CustomerTableModel(customersList));
+                   this.table.repaint();
+                   //this.customersList.add(customer);
+                   //this.table.setModel(new CustomerTableModel(customersList));
+               }
+           }catch (IOException io){
+               io.printStackTrace();
+           }
         } else {
             customer.setId(id);
             customer.setName(tf_name.getText());
